@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AVOSCloud.initialize(this, "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI"
-                , "Qb17eoMfxfi4LpjinPUTCFS1", "https:/4MyF250O.api.lncldglobal.com");
         sManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         gra = sManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         acc = sManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);

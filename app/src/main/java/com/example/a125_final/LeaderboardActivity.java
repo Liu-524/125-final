@@ -21,7 +21,6 @@ public class LeaderboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
-        AVOSCloud.initialize(this, appid, appkey, "https:/4MyF250O.api.lncldglobal.com");
         Intent intent = getIntent();
         score = intent.getIntExtra("score", 0);
         user.setUsername(intent.getStringExtra("username"));

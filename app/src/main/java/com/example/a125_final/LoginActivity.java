@@ -18,8 +18,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        AVOSCloud.initialize(this, "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI"
-                , "Qb17eoMfxfi4LpjinPUTCFS1", "https:/4MyF250O.api.lncldglobal.com");
         TextView name = findViewById(R.id.email);
         TextView password = findViewById(R.id.password);
         TextView rpw = findViewById(R.id.rPassword);
@@ -29,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
             String userName = name.getText().toString();
             String pwd = password.getText().toString();
             AVUser.logIn(userName, pwd).subscribe((new Observer<AVUser>() {
-                public void onSubscribe(Disposable disposable) {}
+                public void onSubscribe(Disposable disposable) { }
                 public void onNext(AVUser user) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("username", user.getUsername());
@@ -44,18 +42,23 @@ public class LoginActivity extends AppCompatActivity {
             }));
         });
         signup.setOnClickListener(v -> {
+            System.out.println("signup!");
             String userName = name.getText().toString();
             String pwd = password.getText().toString();
             String pwd2 = rpw.getText().toString();
             if (!pwd.equals(pwd2)) {
+                System.out.println("wait!");
                 rpw.clearComposingText();
             } else {
                 AVUser user = new AVUser();
                 user.setUsername(userName);
                 user.setPassword(pwd);
+                System.out.println(userName);
+                System.out.println(pwd);
                 user.signUpInBackground().subscribe(new Observer<AVUser>() {
                     public void onSubscribe(Disposable disposable) {}
                     public void onNext(AVUser user) {
+                        System.out.println("here");
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("login_info", true);
                         intent.putExtra("username", user.getUsername());
