@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import cn.leancloud.AVUser;
+
 
 public class MainActivity extends AppCompatActivity  implements SensorEventListener {
     /**acclerationmeter with gravity. */
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     private float[] last = new float[3];
 
     private TextView test;
+
+    private AVUser user;
     /**create game scene.
      *
      * @param savedInstanceState unused :(
@@ -72,7 +76,11 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
             */
 
         });
-
+        Button login = findViewById(R.id.login_button);
+        login.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        });
     }
 
     /**
@@ -134,12 +142,17 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
             } else {
                 if (Math.sqrt(accVal[0] * accVal[0]
                         + accVal[1] * accVal[1]
-                        + accVal[2] * accVal[2]) >= accTh) {
+                        + accVal[2] * accVal[2]) >= accTh - 3.0) {
                     inAir = false;
                     test.setText("not-in-air");
-                    test.setText(Long.toString(Math.round(score / 6)));
+                    test.setText(Long.toString(Math.round(score /= 6)));
                     start.setVisibility(View.VISIBLE);
                     sManager.unregisterListener(this);
+                    if (user != null) {
+                        Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
+                        intent.putExtra("score", score);
+                        startActivity(intent);
+                    }
                 }
             }
         } else if (type == Sensor.TYPE_GRAVITY) {
@@ -165,12 +178,6 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
                     }
                 }
             }
-
-
-            /*
-            intent.putExtra("rotation", rotation);
-            startActivity(intent);
-            */
         } else if (type == Sensor.TYPE_ACCELEROMETER) {
             float[] accVal = event.values;
             double acceleration = Math.sqrt(accVal[0] * accVal[0] + accVal[1] * accVal[1] + accVal[2] * accVal[2]);
