@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import cn.leancloud.AVOSCloud;
 import cn.leancloud.AVUser;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -17,6 +18,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        AVOSCloud.initialize(this, "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI"
+                , "Qb17eoMfxfi4LpjinPUTCFS1", "https:/4MyF250O.api.lncldglobal.com");
         TextView name = findViewById(R.id.email);
         TextView password = findViewById(R.id.password);
         TextView rpw = findViewById(R.id.rPassword);
@@ -54,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSubscribe(Disposable disposable) {}
                     public void onNext(AVUser user) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("login_info", true);
                         intent.putExtra("username", user.getUsername());
                         intent.putExtra("password", user.getPassword());
                         startActivity(intent);

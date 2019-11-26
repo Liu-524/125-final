@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import cn.leancloud.AVOSCloud;
 import cn.leancloud.AVUser;
 
 
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     private TextView test;
 
     private AVUser user;
+
+    private boolean loggedIn = false;
     /**create game scene.
      *
      * @param savedInstanceState unused :(
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AVOSCloud.initialize(this, "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI"
+                , "Qb17eoMfxfi4LpjinPUTCFS1", "https:/4MyF250O.api.lncldglobal.com");
         sManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         gra = sManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         acc = sManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
@@ -80,7 +85,20 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         login.setOnClickListener(v -> {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            finish();
         });
+        Intent intent = getIntent();
+        if (intent == null) {
+            loggedIn = false;
+        } else {
+            boolean login_info = intent.getBooleanExtra("login_info", false);
+            if (login_info) {
+                user = new AVUser();
+                user.setUsername(intent.getStringExtra("username"));
+                user.setPassword(intent.getStringExtra("password"));
+                loggedIn = true;
+            }
+        }
     }
 
     /**
@@ -148,9 +166,11 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
                     test.setText(Long.toString(Math.round(score /= 6)));
                     start.setVisibility(View.VISIBLE);
                     sManager.unregisterListener(this);
-                    if (user != null) {
+                    if (loggedIn) {
                         Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
                         intent.putExtra("score", score);
+                        intent.putExtra("username", user.getUsername());
+                        intent.putExtra("password", user.getPassword());
                         startActivity(intent);
                     }
                 }
