@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onSubscribe(Disposable disposable) { }
                 public void onNext(AVUser user) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("login_info", true);
                     intent.putExtra("username", user.getUsername());
                     intent.putExtra("password", user.getPassword());
                     startActivity(intent);
@@ -53,8 +54,6 @@ public class LoginActivity extends AppCompatActivity {
                 AVUser user = new AVUser();
                 user.setUsername(userName);
                 user.setPassword(pwd);
-                System.out.println(userName);
-                System.out.println(pwd);
                 user.signUpInBackground().subscribe(new Observer<AVUser>() {
                     public void onSubscribe(Disposable disposable) {}
                     public void onNext(AVUser user) {

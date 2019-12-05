@@ -9,6 +9,7 @@ public class Flip125 extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         AVOSCloud.initialize(this, "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI"
                 , "Qb17eoMfxfi4LpjinPUTCFS1");
     }

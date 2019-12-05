@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
                     sManager.unregisterListener(this);
                     if (loggedIn) {
                         Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
-                        intent.putExtra("score", score);
+                        intent.putExtra("score", (int) score);
                         intent.putExtra("username", user.getUsername());
                         intent.putExtra("password", user.getPassword());
                         startActivity(intent);
