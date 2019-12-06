@@ -36,10 +36,8 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-                public void onError(Throwable throwable) {
-                    password.clearComposingText();
-                }
-                public void onComplete() { }
+                public void onError(Throwable throwable) { }
+                public void onComplete() {password.clearComposingText();}
             }));
         });
         signup.setOnClickListener(v -> {

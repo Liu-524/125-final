@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -53,7 +54,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         user.setPassword(intent.getStringExtra("password"));
         token = AVUser.getCurrentUser().getSessionToken();
         System.out.println(token);
-        getLeaderBoard();
+        updateScore();
     }
 
     private void updateScore() {
@@ -61,38 +62,29 @@ public class LeaderboardActivity extends AppCompatActivity {
         JSONObject js = new JSONObject();
         try {
             js.put("statisticName", "Flip125_Leaderboard");
-            js.put("statisticValue", Integer.toString(score));
+            js.put("statisticValue", 1000);
             ja.put(js);
-            js = ja.toJSONObject(ja);
-        } catch (Exception e) { }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, js, result -> {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, ja, result -> {
             System.out.println("hahahahahahahahahhahahahahahahahahahhahahahahahha");
         },
                 error -> {
-            System.out.println(error.getCause());
+            System.out.println(error);
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("X-LC-Id:", "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI");
-                params.put("X-LC-Key:", "Qb17eoMfxfi4LpjinPUTCFS1");
-                params.put("X-LC-Session:", token);
-                params.put("Content-Type:", "application/json; charset=UTF-8");
+                params.put("X-LC-Id", "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI");
+                params.put("X-LC-Key", "Qb17eoMfxfi4LpjinPUTCFS1");
+                params.put("X-LC-Session", token);
+                params.put("Content-Type", "application/json");
                 return params;
             }
             @Override
             public String getBodyContentType() {
                 return "application/json";
-            }
-
-            @Override
-            public Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("X-LC-Id:", "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI");
-                params.put("X-LC-Key:", "Qb17eoMfxfi4LpjinPUTCFS1");
-                params.put("X-LC-Session:", token);
-                params.put("Content-Type:", "application/json; charset=UTF-8");
-                return params;
             }
         };
         queue.add(request);
@@ -102,6 +94,33 @@ public class LeaderboardActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, boardUrl, null, r -> {
             System.out.println("success getting board");
             /* do some thing*/
+            /* Only care about the username, score and their rank, I didn't do the rest when signing in.
+            *sample result:
+            * {
+                "results": [
+                {
+                  "user": {
+                    "objectId": "5ab9f63910b03545c0f529df",
+                    "__type": "Pointer",
+                    "username": "Superman",
+                    "avatar_url": "http://example.com/avatar.png",
+                    "className": "_User"
+                  },
+                  "rank": 0,
+                  "statisticName": "wins",
+                  "statisticValue": 42,
+                  "statistics": [{
+                    "statisticName": "world",
+                    "statisticValue": null,
+                    "version": null,
+                  }]
+                }, {
+                  "user": {},
+                  "rank": 1,
+                } ...
+                ]
+              }
+             */
         }, error -> {
             System.out.println("error in getboard");
         })
