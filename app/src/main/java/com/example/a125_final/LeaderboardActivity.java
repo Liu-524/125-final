@@ -57,27 +57,28 @@ public class LeaderboardActivity extends AppCompatActivity {
         updateScore();
     }
 
+    /**
+     * update the user's new score passed from the main activity.
+     */
     private void updateScore() {
         JSONArray ja = new JSONArray();
         JSONObject js = new JSONObject();
         try {
             js.put("statisticName", "Flip125_Leaderboard");
-            js.put("statisticValue", 1000);
+            js.put("statisticValue", score);
             ja.put(js);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, ja, result -> {
-            System.out.println("hahahahahahahahahhahahahahahahahahahhahahahahahha");
-        },
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, ja, result -> { },
                 error -> {
             System.out.println(error);
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("X-LC-Id", "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI");
-                params.put("X-LC-Key", "Qb17eoMfxfi4LpjinPUTCFS1");
+                params.put("X-LC-Id", appid);
+                params.put("X-LC-Key", appkey);
                 params.put("X-LC-Session", token);
                 params.put("Content-Type", "application/json");
                 return params;
@@ -90,7 +91,10 @@ public class LeaderboardActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    private JSONObject getLeaderBoard() {
+    /**
+     * should post the leaderboard with a chunked view(under construction).
+     */
+    private void postLeaderBoard() {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, boardUrl, null, r -> {
             System.out.println("success getting board");
             /* do some thing*/
@@ -128,12 +132,11 @@ public class LeaderboardActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("X-LC-Id", "4MyF250OP26euKGPTFQxc0pE-MdYXbMMI");
-                params.put("X-LC-Key", "Qb17eoMfxfi4LpjinPUTCFS1");
+                params.put("X-LC-Id", appid);
+                params.put("X-LC-Key", appkey);
                 return params;
             }
         };
         queue.add(request);
-        return null;
     }
 }
