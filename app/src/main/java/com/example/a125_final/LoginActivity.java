@@ -1,13 +1,10 @@
 package com.example.a125_final;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-
-import cn.leancloud.AVOSCloud;
 import cn.leancloud.AVUser;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -41,12 +38,10 @@ public class LoginActivity extends AppCompatActivity {
             }));
         });
         signup.setOnClickListener(v -> {
-            System.out.println("signup!");
             String userName = name.getText().toString();
             String pwd = password.getText().toString();
             String pwd2 = rpw.getText().toString();
             if (!pwd.equals(pwd2)) {
-                System.out.println("wait!");
                 rpw.setText("");
             } else {
                 AVUser user = new AVUser();
@@ -55,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
                 user.signUpInBackground().subscribe(new Observer<AVUser>() {
                     public void onSubscribe(Disposable disposable) {}
                     public void onNext(AVUser user) {
-                        System.out.println("here");
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("login_info", true);
                         intent.putExtra("username", user.getUsername());
