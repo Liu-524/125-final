@@ -108,19 +108,28 @@ public class LeaderboardActivity extends AppCompatActivity {
                 //parent.removeAllViews();
                 LinearLayout parent = findViewById(R.id.boardlayout);
                 parent.removeAllViews();
-                for (int i = 0; i < array.length(); i++) {
-                    System.out.println(i);
+                for (int i = -1; i < array.length(); i++) {
                     View chunk = getLayoutInflater().inflate(R.layout.chunk_leaderboard, parent, false);
-                    TextView entry = chunk.findViewById(R.id.leaderboard);
-                    JSONObject result = array.getJSONObject(i);
-                    int rank = result.getInt("rank");
-                    int score = result.getInt("statisticValue");
-                    JSONObject user = result.getJSONObject("user");
-                    System.out.println(user.toString());
-                    String username = user.getString("username");
-                    String text = "Username: " + username + " | " + "Score: " + score + " | " + "Rank: " + rank;
-                    entry.setText(text);
-                    parent.addView(chunk);
+                    TextView usernameText = chunk.findViewById(R.id.uesrname);
+                    TextView rankText = chunk.findViewById(R.id.rank);
+                    TextView scoreText = chunk.findViewById(R.id.score);
+                    if (i == -1) {
+                        rankText.setText("Rank");
+                        usernameText.setText("Username");
+                        scoreText.setText("Score");
+                        parent.addView(chunk);
+                    } else {
+                        JSONObject result = array.getJSONObject(i);
+                        int rank = result.getInt("rank");
+                        int score = result.getInt("statisticValue");
+                        JSONObject user = result.getJSONObject("user");
+                        System.out.println(user.toString());
+                        String username = user.getString("username");
+                        rankText.setText(Integer.toString(rank + 1));
+                        usernameText.setText(username);
+                        scoreText.setText(Integer.toString(score));
+                        parent.addView(chunk);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
