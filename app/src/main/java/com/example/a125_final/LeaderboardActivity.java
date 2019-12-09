@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.android.volley.AuthFailureError;
@@ -17,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -55,6 +59,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         token = AVUser.getCurrentUser().getSessionToken();
         System.out.println(token);
         updateScore();
+        postLeaderBoard();
     }
 
     /**
@@ -97,6 +102,24 @@ public class LeaderboardActivity extends AppCompatActivity {
     private void postLeaderBoard() {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, boardUrl, null, r -> {
             System.out.println("success getting board");
+            try {
+                JSONArray array = r.getJSONArray("results");
+                LinearLayout parent = findViewById(R.id.boardlayout);
+                parent.removeAllViews();
+                for (int i = 0; i < array.length(); i++) {
+                    View chunk = getLayoutInflater().inflate(R.layout.activity_leaderboard, parent, false);
+                    parent.addView(chunk);
+                    TextView entry = chunk.findViewById(R.id.leaderboard);
+                    JSONObject result = array.getJSONObject(i);
+                    int rank = result.getInt("rank");
+                    int score = result.getInt("statisticValue");
+                    JSONObject userArray = result.getJSONObject("user");
+                    String username = userArray.getString("username");
+                    entry.setText("Username: " + username + " | " + "Score: " + score + " | " + "Rank: " + rank);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             /* do some thing*/
             /* Only care about the username, score and their rank, I didn't do the rest when signing in.
             *sample result:
