@@ -36,8 +36,8 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-                public void onError(Throwable throwable) { }
-                public void onComplete() {password.clearComposingText();}
+                public void onError(Throwable throwable) {password.setText(""); }
+                public void onComplete() { }
             }));
         });
         signup.setOnClickListener(v -> {
@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
             String pwd2 = rpw.getText().toString();
             if (!pwd.equals(pwd2)) {
                 System.out.println("wait!");
-                rpw.clearComposingText();
+                rpw.setText("");
             } else {
                 AVUser user = new AVUser();
                 user.setUsername(userName);
@@ -60,11 +60,24 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("login_info", true);
                         intent.putExtra("username", user.getUsername());
                         intent.putExtra("password", user.getPassword());
+                        AVUser.logIn(userName, pwd).subscribe((new Observer<AVUser>() {
+                            public void onSubscribe(Disposable disposable) { }
+                            public void onNext(AVUser user) {
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("login_info", true);
+                                intent.putExtra("username", user.getUsername());
+                                intent.putExtra("password", user.getPassword());
+                                startActivity(intent);
+                                finish();
+                            }
+                            public void onError(Throwable throwable) {password.setText("");}
+                            public void onComplete() {}
+                        }));
                         startActivity(intent);
                         finish();
                     }
                     public void onError(Throwable throwable) {
-                        name.clearComposingText();
+                        name.setText("");
                     }
                     public void onComplete() {}
                 });
