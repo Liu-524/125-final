@@ -104,20 +104,23 @@ public class LeaderboardActivity extends AppCompatActivity {
             System.out.println("success getting board");
             try {
                 JSONArray array = r.getJSONArray("results");
-                TextView leaderboard =  findViewById(R.id.leaderboard);
+                //TextView leaderboard =  findViewById(R.id.leaderboard);
                 //parent.removeAllViews();
+                LinearLayout parent = findViewById(R.id.boardlayout);
+                parent.removeAllViews();
                 for (int i = 0; i < array.length(); i++) {
                     System.out.println(i);
-                    //View chunk = getLayoutInflater().inflate(R.layout.activity_leaderboard, parent, false);
-                    //parent.addView(chunk);
-                    //TextView entry = chunk.findViewById(R.id.leaderboard);
+                    View chunk = getLayoutInflater().inflate(R.layout.chunk_leaderboard, parent, false);
+                    TextView entry = chunk.findViewById(R.id.leaderboard);
                     JSONObject result = array.getJSONObject(i);
                     int rank = result.getInt("rank");
                     int score = result.getInt("statisticValue");
                     JSONObject user = result.getJSONObject("user");
                     System.out.println(user.toString());
                     String username = user.getString("username");
-                    leaderboard.append("Username: " + username + " | " + "Score: " + score + " | " + "Rank: " + rank + "\n\n");
+                    String text = "Username: " + username + " | " + "Score: " + score + " | " + "Rank: " + rank;
+                    entry.setText(text);
+                    parent.addView(chunk);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
