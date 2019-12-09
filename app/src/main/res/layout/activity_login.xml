@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#7A9E9F"
     tools:context=".LoginActivity">
 
     <TextView
@@ -50,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
         android:layout_marginEnd="96dp"
+        android:background="#42A5F5"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -72,6 +74,7 @@
         android:layout_marginTop="520dp"
         android:layout_marginEnd="96dp"
         android:text="Signup"
+        android:background="#42A5F5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
