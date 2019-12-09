@@ -44,7 +44,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     private final String url = "https://Qb17eoMf.api.lncldglobal.com/1.1/leaderboard/users/self/statistics";
 
     private final String boardUrl = "https://Qb17eoMf.api.lncldglobal.com/1.1/leaderboard/leaderboards/" +
-            "Flip125_Leaderboard/ranks?maxResultsCount=50";
+            "Flip125_Leaderboard/ranks?maxResultsCount=50&includeUser=username";
 
     private RequestQueue queue;
     @Override
@@ -107,14 +107,16 @@ public class LeaderboardActivity extends AppCompatActivity {
                 LinearLayout parent = findViewById(R.id.boardlayout);
                 parent.removeAllViews();
                 for (int i = 0; i < array.length(); i++) {
+                    System.out.println(i);
                     View chunk = getLayoutInflater().inflate(R.layout.activity_leaderboard, parent, false);
                     parent.addView(chunk);
                     TextView entry = chunk.findViewById(R.id.leaderboard);
                     JSONObject result = array.getJSONObject(i);
                     int rank = result.getInt("rank");
                     int score = result.getInt("statisticValue");
-                    JSONObject userArray = result.getJSONObject("user");
-                    String username = userArray.getString("username");
+                    JSONObject user = result.getJSONObject("user");
+                    System.out.println(user.toString());
+                    String username = user.getString("username");
                     entry.setText("Username: " + username + " | " + "Score: " + score + " | " + "Rank: " + rank);
                 }
             } catch (JSONException e) {
