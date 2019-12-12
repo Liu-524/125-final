@@ -1,6 +1,10 @@
 package com.example.a125_final;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,8 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
-
-import cn.leancloud.AVOSCloud;
 import cn.leancloud.AVUser;
 
 public class LeaderboardActivity extends AppCompatActivity {
@@ -49,6 +51,21 @@ public class LeaderboardActivity extends AppCompatActivity {
         user.setUsername(intent.getStringExtra("username"));
         user.setPassword(intent.getStringExtra("password"));
         token = AVUser.getCurrentUser().getSessionToken();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("You got: " + score + "!");
+        builder.setTitle("Congratulations!");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
         updateScore();
         postLeaderBoard();
     }
