@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/leaderboard_info"
     android:layout_width="match_parent"
+    android:background="#7A9E9F"
     android:layout_height="wrap_content">
 
     <TextView
